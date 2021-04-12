@@ -22,7 +22,3 @@ func main() {
 	fmt.Println("Now creating git repository")
 	repoSetup()
 }
-
-func repoSetup() {
-
-}
