@@ -18,3 +18,6 @@
 *.iml
 /aws-bot-setup/setup
 *.env
+
+# don't need the built executable
+repo-setup/main
