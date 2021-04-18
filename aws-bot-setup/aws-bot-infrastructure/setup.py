@@ -6,7 +6,7 @@ with open("README.md") as fp:
 
 
 setuptools.setup(
-    name="infra_setup",
+    name="aws_bot_infrastructure",
     version="0.0.1",
 
     description="An empty CDK Python app",
@@ -15,8 +15,8 @@ setuptools.setup(
 
     author="author",
 
-    package_dir={"": "infra_setup"},
-    packages=setuptools.find_packages(where="infra_setup"),
+    package_dir={"": "aws_bot_infrastructure"},
+    packages=setuptools.find_packages(where="aws_bot_infrastructure"),
 
     install_requires=[
         "aws-cdk.core==1.97.0",
