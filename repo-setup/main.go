@@ -30,12 +30,12 @@ func setupRepo() {
 		log.Fatal("Error loading .env file")
 	}
 
-	token := os.Getenv("GITHUB_AUTH_TOKEN")
+	token := os.Getenv("github-token") // this needs to be a Personal Access Token from GitHub with at least repo permissions set
 	if token == "" {
-		log.Fatal("Unauthorized: No token present")
+		log.Fatal("Unauthorized: No Token Present")
 	}
 	if *name == "" {
-		log.Fatal("No name: New repos must be given a name")
+		log.Fatal("Script needs a repo name")
 	}
 	ctx := context.Background()
 	ts := oauth2.StaticTokenSource(&oauth2.Token{AccessToken: token})
