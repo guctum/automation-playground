@@ -45,12 +45,12 @@ func createRepo() {
 		log.Fatal("Script needs a repo name")
 	}
 	ctx := context.Background()
-	ts := oauth2.StaticTokenSource(&oauth2.Token{AccessToken: token})
-	tc := oauth2.NewClient(ctx, ts)
-	client := github.NewClient(tc)
+	tokenSource := oauth2.StaticTokenSource(&oauth2.Token{AccessToken: token})
+	oauthClient := oauth2.NewClient(ctx, tokenSource)
+	client := github.NewClient(oauthClient)
 
-	r := &github.Repository{Name: name, Private: private, Description: description}
-	repo, _, err := client.Repositories.Create(ctx, "", r)
+	repository := &github.Repository{Name: name, Private: private, Description: description}
+	repo, _, err := client.Repositories.Create(ctx, "", repository)
 	if err != nil {
 		log.Fatal(err)
 	}
