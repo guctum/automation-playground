@@ -24,7 +24,7 @@ class AwsBotInfrastructureStack(cdk.Stack):
                            removal_policy=core.RemovalPolicy.DESTROY,
                            auto_delete_objects=True)
 
-        # VPC
+        # VPC - open port 22 somewhere to allow for SSH, should be done from the subgroup
         vpc = ec2.Vpc(self, "VPC",
                       nat_gateways=0,
                       subnet_configuration=[ec2.SubnetConfiguration(name="public",subnet_type=ec2.SubnetType.PUBLIC)]
@@ -48,5 +48,6 @@ class AwsBotInfrastructureStack(cdk.Stack):
                                 instance_type=ec2.InstanceType("t2.micro"),
                                 machine_image=amzn_linux,
                                 vpc = vpc,
-                                role = role
+                                role = role,
+                                key_name = "discord-bot" # existing key that exists in my account
                                 )

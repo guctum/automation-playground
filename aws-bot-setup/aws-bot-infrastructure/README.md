@@ -1,3 +1,7 @@
+# Security
+
+In the EC2 instance I use the key_name field with the name of an existing key/pair I have in my AWS account.
+To generate one, there is a resource that can be provisioned and retrieved via the awscli
 
 # Welcome to your CDK Python project!
 
