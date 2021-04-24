@@ -13,21 +13,23 @@ import (
 )
 
 func main()  {
-	action := os.Args[2]
-	// put a check in here to see if the repo exists?? can I even do that???
-	if action == "create" {
-		fmt.Println("Now creating a new GitHub repository named: ", os.Args[1])
-		createRepo()
-	} else if action == "delete" {
-		fmt.Println("Now deleting repo: ", os.Args[1])
-		deleteRepo()
+	createRepo()
+}
+
+func boolCheck(privacy string) bool {
+	var privacyCheck bool
+	if privacy == "true" {
+		privacyCheck = true
+	} else if privacy == "false" {
+		privacyCheck = false
 	}
+	return privacyCheck
 }
 
 var (
 	name        = flag.String("name", os.Args[1], "Name of repo to create in authenticated user's GitHub account.")
 	description = flag.String("description", "", "Description of created repo.")
-	private     = flag.Bool("private", false, "Will created repo be private.")
+	private     = flag.Bool("private", boolCheck(os.Args[2]), "Whether or not the created repo will be private")
 )
 
 func createRepo() {
@@ -55,24 +57,4 @@ func createRepo() {
 		log.Fatal(err)
 	}
 	fmt.Printf("Successfully created new repo: %v\n", repo.GetName())
-}
-
-func deleteRepo() {
-	flag.Parse()
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal("Error loading .env file")
-	}
-
-	token := os.Getenv("github-token")
-	if token == "" {
-		log.Fatal("Script needs a repo name")
-	}
-	ctx := context.Background()
-	tokenSource := oauth2.StaticTokenSource(&oauth2.Token{AccessToken: token})
-	oauthClient := oauth2.NewClient(ctx, tokenSource)
-	client := github.NewClient(oauthClient)
-
-	client.Repositories.Delete(ctx, "", os.Args[1])
-	fmt.Print("Successfully deleted repo: ", os.Args[1])
 }
