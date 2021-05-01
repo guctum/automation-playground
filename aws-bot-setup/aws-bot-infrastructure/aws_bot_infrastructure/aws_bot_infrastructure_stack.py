@@ -10,6 +10,7 @@ from aws_cdk import (
     aws_s3 as s3,
     core
 )
+from cdk_ec2_key_pair import KeyPair
 
 
 class AwsBotInfrastructureStack(cdk.Stack):
@@ -23,6 +24,12 @@ class AwsBotInfrastructureStack(cdk.Stack):
                            versioned=True,
                            removal_policy=core.RemovalPolicy.DESTROY,
                            auto_delete_objects=True)
+
+        # Key Pair
+        key = KeyPair(self, "AWS Sample EC2 KeyPair",
+                      name="Sandbox Key",
+                      description="Generic key for AWS Sandbox - or any purpose really",
+                      store_public_key=True)
 
         # VPC - open port 22 somewhere to allow for SSH, should be done from the subgroup
         vpc = ec2.Vpc(self, "VPC",
@@ -49,5 +56,6 @@ class AwsBotInfrastructureStack(cdk.Stack):
                                 machine_image=amzn_linux,
                                 vpc = vpc,
                                 role = role,
-                                key_name = "discord-bot" # existing key that exists in my account
+                                key_name = key.name # EC2 instance will use the keypair we created earlier, it can be grabbed using the CLI
+                                # key_name = "discord-bot" # existing key that exists in my account
                                 )
