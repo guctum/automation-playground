@@ -60,3 +60,11 @@ command.
  * `cdk docs`        open CDK documentation
 
 Enjoy!
+
+# Important Things To Take Note Of
+* The keypair generated will have to be retrieved via AWS CLI
+    - With EC2 keypairs, when they are generated you can download them in the console but you only get the one chance to do so
+    - But it can still be obtained via CLI, otherwise it can be created before using CDK and the name just plugged into the code that creates the EC2 instance
+    - Unless changed, script will create an EC2 instance of the type t2.micro which is small with limited resources but is free to use
+    - System needs to be setup to communicate with AWS
+        - This can either take the form of adding AWS Account ID to app.py or using aws configure on terminal to create aws creds

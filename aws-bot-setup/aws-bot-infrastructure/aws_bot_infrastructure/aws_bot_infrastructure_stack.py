@@ -52,7 +52,7 @@ class AwsBotInfrastructureStack(cdk.Stack):
 
         # Instance
         instance = ec2.Instance(self, "Instance",
-                                instance_type=ec2.InstanceType("t2.micro"),
+                                instance_type=ec2.InstanceType("t2.micro"), # t2.micro is free tier, bigger can be used if needed
                                 machine_image=amzn_linux,
                                 vpc = vpc,
                                 role = role,
