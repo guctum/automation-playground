@@ -9,11 +9,16 @@ import (
 	"os"
 
 	"github.com/google/go-github/v35/github"
+	"github.com/aws/aws-lambda-go/lambda"
 	"golang.org/x/oauth2"
 )
 
+func HandleRequest(ctx context.Context) {
+	createRepo(*name, *private)
+}
+
 func main()  {
-	createRepo()
+	lambda.Start(HandleRequest)
 }
 
 func boolCheck(privacy string) bool {
@@ -32,7 +37,7 @@ var (
 	private     = flag.Bool("private", boolCheck(os.Args[2]), "Whether or not the created repo will be private")
 )
 
-func createRepo() {
+func createRepo(repoName string, repoPrivacy bool) {
 	flag.Parse()
 	err := godotenv.Load()
 	if err != nil {
@@ -43,15 +48,11 @@ func createRepo() {
 	if token == "" {
 		log.Fatal("Unauthorized: No Token Present")
 	}
-	if *name == "" {
-		log.Fatal("Script needs a repo name")
-	}
 	ctx := context.Background()
 	tokenSource := oauth2.StaticTokenSource(&oauth2.Token{AccessToken: token})
 	oauthClient := oauth2.NewClient(ctx, tokenSource)
 	client := github.NewClient(oauthClient)
-
-	repository := &github.Repository{Name: name, Private: private, Description: description}
+	repository := &github.Repository{Name: name, Private: private}
 	repo, _, err := client.Repositories.Create(ctx, "", repository)
 	if err != nil {
 		log.Fatal(err)
